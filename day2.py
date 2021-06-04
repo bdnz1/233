@@ -44,8 +44,11 @@ while i < 20:
         f=0
         # 跳出训话
         break # 跳出循环
-    if f==16:
+    if f==15:
         print("系统已锁定")
+        break
+    if j==0:
+        print("没金币了")
         break
     i= i + 1  # 每次加1
 
