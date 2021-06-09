@@ -1,0 +1,136 @@
+'''
+    购物商城：
+        需求：购物商城
+        1.商品
+        2.金钱
+        3.购物车
+
+        买东西需求：
+            看这个商品是不是存在
+                 若存在，
+                    您的余额是否够买这个东西
+                        将自己的余额减去商品的价格
+                        将这个商品添加购物车。
+                    余额不够：提示您的余额，穷鬼！选其他商品！
+            若不存在：提示，您要的商品不存在。
+            是否是Q，q：
+                结算，打印购物小条。
+有十张优惠券，系统初始化就会随机抽取一张优惠券。最后计算的时候进行打折。
+'''
+# 准备必备商品
+import random
+i=random.randint(0,7)
+n=random.randint(0,20)
+zhe=[0.1,[200,100],0.3,[300,200],0.5,[400,300],0.7,[500,400]]
+shop=[
+    ["联想电脑",6000],
+    ["Iphone 16x plus",15000],
+    ["PS5游戏机",3500],
+    ["老干妈",7.5],
+    ["老于妈",5.5],
+    ["卫龙辣条",10],
+    ["HUA WEI watch",1200],
+    ["MAC PC",15000]
+]
+if isinstance(zhe[i],list):
+    print("恭喜您获得",n,"张",shop[i][0],"满",zhe[i][0],"减",zhe[i][1],"优惠卷")
+else:
+    print("恭喜您获得",n,"张",shop[i][0],zhe[i],"折优惠卷")
+# 空的购物车
+mycart = []
+
+# 初始化自己的余额
+salary =  input("请输入您的余额:")
+salary = int(salary)
+
+
+# 展示超市商品:角标 + 数据
+
+
+
+# 买东西
+while True:
+    for index, value in enumerate(shop):
+        print(index, value)
+    chose = input("请输入您要的商品编号：") #"q"
+    number=input("请输入您要购买的数量：")
+    if chose.isdigit() and number.isdigit(): # 看chose能否被看成数字
+        chose = int(chose)
+        number=int(number)
+        # 判断商品是否存在
+        if chose < len(shop):
+            # 判断余额是否足够
+            if salary >= shop[chose][1]*number :
+                # 正常买东西
+                mycart.append([shop[chose],number])
+                # 减去金额
+                if chose==i:
+                    if isinstance(zhe[i],list):
+                        if shop[chose][1]*number>=zhe[i][0]:
+                            salary = salary - shop[chose][1] * number+zhe[i][1]
+                            print("恭喜，添加成功！您的余额还剩：￥", salary)
+                        else:
+                            salary = salary - shop[chose][1] * number
+                            print("未达到优惠标准，添加成功！您的余额还剩：￥", salary)
+                    else:
+                        salary = salary - shop[chose][1]*zhe[i]
+                        print("恭喜，添加成功！您的余额还剩：￥", salary)
+                else :
+                    salary = salary - shop[chose][1]
+                    print("恭喜，添加成功！您的余额还剩：￥",salary)
+            else:
+                print("穷鬼，钱不够，请选择其他商品！")
+    elif chose == 'Q' or chose == 'q':
+        print("欢迎下次光临，再见！")
+        break
+    else:
+        print("对不起，您的输入有误，请重新输入！")
+# 打印购物小条
+for index,value in mycart:
+    print(index,value)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
