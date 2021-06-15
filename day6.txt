@@ -1,0 +1,161 @@
+'''
+
+'''
+def shop():
+    import random
+    i=random.randint(0,7)
+    n=random.randint(0,20)
+    zhe=[0.1,[200,100],0.3,[300,200],0.5,[400,300],0.7,[500,400]]
+    shop=[
+        ["联想电脑",6000],
+        ["Iphone 16x plus",15000],
+        ["PS5游戏机",3500],
+        ["老干妈",7.5],
+        ["老于妈",5.5],
+        ["卫龙辣条",10],
+        ["HUA WEI watch",1200],
+        ["MAC PC",15000]
+    ]
+    if isinstance(zhe[i],list):
+        print("恭喜您获得",n,"张",shop[i][0],"满",zhe[i][0],"减",zhe[i][1],"优惠卷")
+    else:
+        print("恭喜您获得",n,"张",shop[i][0],zhe[i],"折优惠卷")
+    # 空的购物车
+    mycart = []
+    # 初始化自己的余额
+    salary =  input("请输入您的余额:")
+    salary = int(salary)
+    # 展示超市商品:角标 + 数据
+    # 买东西
+    while True:
+        for index, value in enumerate(shop):
+            print(index, value)
+        chose = input("请输入您要的商品编号：") #"q"
+        number=input("请输入您要购买的数量：")
+        if chose.isdigit() and number.isdigit(): # 看chose能否被看成数字
+            chose = int(chose)
+            number=int(number)
+            # 判断商品是否存在
+            if chose < len(shop):
+                # 判断余额是否足够
+                if salary >= shop[chose][1]*number :
+                    # 正常买东西
+                    mycart.append([shop[chose],number])
+                    # 减去金额
+                    if chose==i:
+                        if isinstance(zhe[i],list):
+                            if shop[chose][1]*number>=zhe[i][0]:
+                                salary = salary - shop[chose][1] * number+zhe[i][1]
+                                print("恭喜，添加成功！您的余额还剩：￥", salary)
+                            else:
+                                salary = salary - shop[chose][1] * number
+                                print("未达到优惠标准，添加成功！您的余额还剩：￥", salary)
+                        else:
+                            salary = salary - shop[chose][1]*zhe[i]
+                            print("恭喜，添加成功！您的余额还剩：￥", salary)
+                    else :
+                        salary = salary - shop[chose][1]
+                        print("恭喜，添加成功！您的余额还剩：￥",salary)
+                else:
+                    print("穷鬼，钱不够，请选择其他商品！")
+        elif chose == 'Q' or chose == 'q':
+            print("欢迎下次光临，再见！")
+            break
+        else:
+            print("对不起，您的输入有误，请重新输入！")
+    # 打印购物小条
+    for index,value in mycart:
+        print(index,value)
+
+
+citys = {
+    "北京":{
+        "昌平":{
+            "回龙观":['海底捞','呷哺呷哺'],
+            "龙泽":["永辉超市","永旺超市"]
+        },
+        "海淀":{
+            "高校":["清华","北大"],
+            "公园":["香山","植物园","玉渊潭公园","军事博物馆","国家图书馆"]
+        },
+        "朝阳":{
+            "公园":["朝阳南北塔","朝阳凌河公园"]
+        },
+        "延庆":{
+            "景点":["龙庆峡"]
+        }
+    }
+}
+
+# 1.开发
+def print_place(data):
+    print("------------------------Jason旅游导航系统--------------------------")
+    for i in data:
+        print(i)
+
+while True:
+    print_place(citys)
+    chose1 = input("请输入您要去的城市：")
+    if chose1 in citys:
+        # 打印二级城市
+        print_place(citys[chose1])
+        chose2 = input("请输入三级城市：")
+        if chose2 in citys[chose1]:
+            print_place(citys[chose1][chose2])
+            # 输入四级景点
+            chose3 = input("请输入四级景点：")
+            if chose3 in citys[chose1][chose2]:
+                print_place(citys[chose1][chose2][chose3])
+                if "永辉超市" or "永旺超市" in citys[chose1][chose2][chose3] :
+                    shop()
+                print("旅游导航系统导航到此结束！")
+            elif chose2 == 'q' or chose2 == 'Q':
+                print("欢迎下次光临!")
+                break
+            else:
+                print("输入错误，请重新输入！")
+        elif chose2 == 'q' or chose2 == 'Q':
+            print("欢迎下次光临!")
+            break
+        else:
+            print("输入错误，请重新输入！")
+    elif chose1 == 'q' or chose1 == 'Q':
+        print("欢迎下次光临!")
+        break
+    else:
+        print("输入错误，请重新输入！")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
