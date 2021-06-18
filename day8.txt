@@ -1,0 +1,208 @@
+
+
+import random
+# 1.准备数据库和开户行名称
+users={}
+'''
+    "张三"：{
+        "account":"adfadfa",
+        "password":"asdfasdf"
+    }
+'''
+bank_name = "中国工商银行昌平支行"
+# 生成随机id
+import random
+def ranid():
+    id = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789"
+    i = 0
+    id1 = ""
+    while i<=7 :
+        id1=id1+id[random.randint(0,61)]
+        i=i+1
+    return id1
+
+# 银行开户逻辑
+def bank_addUser(account,username,password,country,province,street,door):
+    # 1.看银行是否已满  满了返回3
+    if len(users) > 100:
+        return 3
+
+    # 2.用户名是否存在，若存在返回2
+    if username in users.keys():
+        return 2
+    # 3.正常开户，将用户信息存在数据库
+    users[username]  = {
+        "account":account,
+        "password":password,
+        "country":country,
+        "province":province,
+        "street":street,
+        "door":door,
+        "money":0,
+        "bank_name":bank_name
+    }
+    return 1
+
+
+# 用户操作逻辑
+def addUser():
+    username = input("请输入用户名:")
+    password = input("请输入取款密码:")
+    country= input("请输入国家:")
+    province = input("请输入省份：")
+    street =  input("请输入街道：")
+    door = input("请输入门牌号：")
+    account = ranid() #  8888  --> "8888"
+    # 架构数据传输给银行
+    status = bank_addUser(account,username,password,country,province,street,door)
+
+    if status == 1:
+        print("开户成功！以下是您的个人信息：")
+        info = '''
+            -------------------个人信息------------------
+            用户名:%s,
+            密码：%s,
+            账号:%s,
+            地址：
+                国家:%s,
+                省份:%s,
+                街道：%s,
+                门牌号:%s
+            余额：%s,
+            开户行:%s
+        '''
+        print(info % (username,password,account,country,province,street,door,users[username]["money"],bank_name))
+
+    elif status == 2:
+        print("该用户已存在，别瞎弄！")
+    elif status == 3:
+        print("对不起，数据库已满！请携带证件到其他银行办理！")
+
+# 用户存在判断
+def can(name,word):
+    if name in users.keys():
+        if word==users[name]["password"]:
+            return 0
+        else :
+            return 2 #密码不正确
+    else :
+        return 1  #用户不存在
+
+# 用户存在与余额判断
+def can1(name,word,m):
+    m=int(m)
+    mon=int(users[name]["money"])
+    if name in users.keys():
+        if word==users[name]["password"]:
+            if m<=mon:
+                return 4
+            else :
+                return 3
+        else :
+            return 2 #密码不正确
+    else :
+        return 1  #用户不存在
+#用户存钱
+def addmoney():
+    name = input("请输入用户名")
+    word = input("请输入密码")
+    if can(name, word)==1:
+        return false
+    else :
+        m = int(input("请输入存款金额"))
+        bank_addmoney(name,m)
+        print ("向",name,"账户存入",m,"元","现存余额为",users[name]["money"],"元")
+
+#银行存钱，修改账户余额操作
+def bank_addmoney(name,m):
+    users[name]["money"] =  users[name]["money"]+int(m)
+# 用户取钱
+def getmoney():
+    name = input("请输入用户名")
+    word = input("请输入密码")
+    m = input("请输入取款金额")
+    print(can1(name,word,m))
+    if can1(name,word,m)==4:
+        bank_getmoney(name,m)
+        print("向", name, "账户取出", m, "元", "现存余额为", users[name]["money"], "元")
+# 银行取钱
+def bank_getmoney(name,m):
+    users[name]["money"] = int(users[name]["money"])-int(m)
+
+# 用户转账
+def throwmoney():
+
+    name = input("请输入转出账户用户名")
+    word = input("请输入转出账户密码")
+    m = input("请输入转出金额")
+    if can1(name,word,m)==4:
+        nam = input("请输入转入账户用户名")
+        wor = input("请输入转入账户密码")
+        if can(nam,wor)==0:
+            bank_addmoney(nam,m)
+            bank_getmoney(name,m)
+            print("向", nam, "账户存入", m, "元", "现存余额为", users[nam]["money"], "元")
+            print("向", name, "账户取出", m, "元", "现存余额为", users[name]["money"], "元")
+#账户信息查询
+def getinformation():
+    name = input("请输入用户名")
+    word = input("请输入密码")
+    if can(name, word)==1:
+        print("该用户不存在")
+    elif can(name, word) == 2:
+        print("密码错误")
+    else :
+        print("以下是您查询的个人信息：")
+        info = '''
+                   -------------------个人信息------------------
+                   用户名:%s,
+                   密码：%s,
+                   账号:%s,
+                   地址：
+                       国家:%s,
+                       省份:%s,
+                       街道：%s,
+                       门牌号:%s
+                   余额：%s,
+                   开户行:%s
+               '''
+        print(
+            info % (name, users[name]["password"],users[name]["account"] , users[name]["country"], users[name]["province"], users[name]["street"], users[name]["door"], users[name]["money"], bank_name))
+
+
+def welcome():
+    print("--------------------------------------")
+    print("-           中国工商银行账户管理系统    -")
+    print("--------------------------------------")
+    print("-    1.开户                           -")
+    print("-    2.存钱                           -")
+    print("-    3.取钱                           -")
+    print("-    4.转账                           -")
+    print("-    5.查询                           -")
+    print("-    6.Bye！                          -")
+    print("- -------------------------------------")
+
+while True:
+    welcome() # 打印页面
+    chose = input("请输入您的业务编号:")
+    if chose == '1':
+        addUser()
+    elif chose == '2':
+        addmoney()
+    elif chose == '3':
+        getmoney()
+    elif chose == '4':
+        throwmoney()
+    elif chose == '5':
+        getinformation()
+    elif chose == '6':
+        break
+    else:
+        print("输入非法，请重新输入！")
+
+
+
+
+
+
+
