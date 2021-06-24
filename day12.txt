@@ -1,0 +1,86 @@
+'''
+    人:
+        行为：吃喝拉撒
+    封装：
+        1.属性不对外显示
+            __XXX
+        2.间接提供一个方法，让外界间接赋值
+            提供setXxxx/getXxxxx
+            setXxxx()间接赋值
+            getXxxx()间接获取值
+
+'''
+
+
+
+class Person:
+    __username = ""
+    __age = 0
+    __high = 0
+    __sex = ""
+
+    def setUsername(self, username):
+        self.__username = username
+
+    def getUsername(self):
+        return self.__username
+
+    def setAge(self, age):
+        if age < 0 or age > 120:
+            print("提示，年龄不合法！")
+        else:
+            self.__age = age
+
+    def getAge(self):
+        return self.__age
+
+    def sethigh(self, high):
+        self.__high = high
+
+    def gethigh(self):
+        return self.__high
+
+    def setsex(self, sex):
+        self.__sex = sex
+
+    def getsex(self):
+        return self.__sex
+
+
+    def eat(self,eatname):
+        print("我叫",self.__username,"，我今年",self.__age,",我喜欢吃",eatname,self.__sex,"性",self.__high,"身高")
+
+
+p = Person()
+# p.username = "旺财"
+p.setUsername ("旺财")
+# p.sex = "男"
+p.setAge(12)
+# p.high = 1.56
+p.setsex("男")
+p.sethigh(1.56)
+p.eat("汉堡")
+
+
+class cup:
+    __high=0
+    __ron=0 #容量
+    __colour=""
+    __pp="" #材质
+    __zhuangshui=0  #装水
+
+class pc:
+    __size=0
+    __price=0
+    __cpu=""
+    __rom=0
+    __daijitime=0
+    __type=0
+    __game=0
+    __watchvideo=0
+
+
+
+
+
+
